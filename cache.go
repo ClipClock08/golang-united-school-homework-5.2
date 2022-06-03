@@ -27,8 +27,18 @@ func (c *Cache) Put(key, value string) {
 	c.Marks[key] = mark
 }
 
-/*func (c *Cache) Keys() []string {
-}*/
+func (c *Cache) Keys() []string {
+	keys := make([]string, 0, len(c.Marks))
+
+	for k := range c.Marks {
+		_, ok := c.Get(k)
+		if ok {
+			keys = append(keys, k)
+		}
+	}
+	return keys
+}
 
 func (c *Cache) PutTill(key, value string, deadline time.Time) {
+	c.Marks[key] = journal{value}
 }
