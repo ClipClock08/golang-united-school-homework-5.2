@@ -20,6 +20,11 @@ func (c *Cache) Get(key string) (string, bool) {
 		return "", false
 	}
 
+	if value.dl.IsZero() {
+		delete(c.Marks, key)
+		return "", false
+	}
+
 	return value.mark, true
 }
 
