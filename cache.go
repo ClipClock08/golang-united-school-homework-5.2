@@ -14,18 +14,24 @@ func NewCache() Cache {
 	return Cache{Marks: map[string]journal{}}
 }
 
+func (j *journal) IsMarkExpired() bool {
+	if j.dl.IsZero() {
+		return false
+	}
+	now := time.Now()
+	return j.dl.Before(now)
+}
+
 func (c *Cache) Get(key string) (string, bool) {
 	value, ok := c.Marks[key]
 	if !ok {
 		return "", false
 	}
 
-	if value.dl.IsZero() {
+	if value.IsMarkExpired() {
 		delete(c.Marks, key)
 		return "", false
 	}
-	now := time.Now()
-	value.dl.Before(now)
 	return value.mark, true
 }
 
