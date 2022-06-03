@@ -4,6 +4,7 @@ import "time"
 
 type journal struct {
 	mark string
+	dl   time.Time
 }
 type Cache struct {
 	Marks map[string]journal
@@ -40,5 +41,5 @@ func (c *Cache) Keys() []string {
 }
 
 func (c *Cache) PutTill(key, value string, deadline time.Time) {
-	c.Marks[key] = journal{value}
+	c.Marks[key] = journal{value, deadline}
 }
