@@ -24,7 +24,8 @@ func (c *Cache) Get(key string) (string, bool) {
 		delete(c.Marks, key)
 		return "", false
 	}
-
+	now := time.Now()
+	value.dl.Before(now)
 	return value.mark, true
 }
 
